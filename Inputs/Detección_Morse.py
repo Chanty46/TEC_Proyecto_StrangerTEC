@@ -12,7 +12,7 @@ def leer_morse():
 
     simbolo_actual = []
     
-    while True:
+    while True: 
         inicio_silencio = time.ticks_ms() #Contar cuanto tiempo el boton no se esta presionando
         
         while boton.value() == 0: 

@@ -30,9 +30,5 @@ def palabra_a_morse(msg):
 
     return morseMsg #Devuelve una lista por cuestion de orden con los espacios y para que se la funcion 2 la pueda leer, ya que si no solo lee E y T
 
-def morse_a_palabra(msg):
-    palabraMsg = ""
-    for i in msg:
-        palabraMsg += morseDict_2[i]
-
-    return palabraMsg 
+def morse_a_letra(msg):
+  return morseDict_2[msg]
