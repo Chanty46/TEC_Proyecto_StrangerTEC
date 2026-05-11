@@ -54,4 +54,3 @@ def leer_morse():
                 simbolo_actual = []
                 break
             
-leer_morse()
