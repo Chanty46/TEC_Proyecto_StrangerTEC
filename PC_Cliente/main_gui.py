@@ -6,7 +6,7 @@ import threading
 import random
 from morse_logic import palabra_a_morse, morse_a_letra
 
-SERVER_IP = "192.168.173.78" # IP DE LA PICO W
+SERVER_IP = "192.168.0.112"
 PORT = 1717
 
 class JuegoStranger:
