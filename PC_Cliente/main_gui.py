@@ -1,4 +1,5 @@
 # main_gui.py
+import os
 import tkinter as tk
 from tkinter import messagebox
 import socket
@@ -33,6 +34,19 @@ class JuegoStranger:
         # Contenedor principal
         self.contenedor = tk.Frame(self.root)
         self.contenedor.pack(fill="both", expand=True)
+
+        # Intentar cargar la imagen del diccionario morse
+        try:
+            directorio_actual = os.path.dirname(os.path.abspath(__file__))
+            ruta_imagen = os.path.join(directorio_actual, "dicc_mor.png")
+
+            if not os.path.exists(ruta_imagen):
+                self.img_dicc = None
+            else:
+                self.img_dicc = tk.PhotoImage(file=ruta_imagen)
+                
+        except Exception as e:
+            self.img_dicc = None
 
         self.pantalla_menu()
         threading.Thread(target=self.conectar_wifi, daemon=True).start()
@@ -85,6 +99,11 @@ class JuegoStranger:
         self.puntos_simple = 0
         
         tk.Button(self.contenedor, text="← Volver al Menú", command=self.pantalla_menu).pack(anchor="nw", padx=10, pady=10)
+        
+        # --- Agregar la imagen en la esquina INFERIOR DERECHA ---
+        if self.img_dicc:
+            tk.Label(self.contenedor, image=self.img_dicc).place(relx=0.98, rely=0.98, anchor="se")
+
         tk.Label(self.contenedor, text="MODO TRANSMISIÓN SIMPLE", font=("Arial", 18, "bold")).pack()
         
         self.lbl_nivel = tk.Label(self.contenedor, text=f"Nivel {self.nivel_actual} de 3", font=("Arial", 14))
@@ -143,6 +162,9 @@ class JuegoStranger:
         
         tk.Button(self.contenedor, text="← Volver al Menú", command=self.pantalla_menu).pack(anchor="nw", padx=10, pady=10)
         
+        # --- Agregar la imagen en la esquina INFERIOR DERECHA ---
+        if self.img_dicc:
+            tk.Label(self.contenedor, image=self.img_dicc).place(relx=0.98, rely=0.98, anchor="se")        
         marco_puntos = tk.Frame(self.contenedor)
         marco_puntos.pack(pady=10)
         self.lbl_pts_A = tk.Label(marco_puntos, text=f"Jugador A (PC): {self.puntos_A} pts", font=("Arial", 12, "bold"))
