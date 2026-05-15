@@ -18,7 +18,7 @@ dataPin = Pin(27, Pin.OUT)    # A/B del U1
 clockPin = Pin(26, Pin.OUT)  # CLK compartido
 
 clockPin.low()
-dataPin.low()
+dataPin.low()	
 
 # ===== LEDS LATERALES =====
 fila0 = Pin(11, Pin.OUT)  # superior
@@ -37,8 +37,8 @@ buzzer.duty_u16(0)
 # CONFIGURACIÓN GENERAL
 # =========================================================
 
-SSID = "Casa Miguel 2.4G"
-PASSWORD = "Res20est22"
+SSID = "RedSanti"
+PASSWORD = "ce1234ce"
 PORT = 1717
 
 UNIDAD = 200  # ms
@@ -201,8 +201,8 @@ def mostrar_simbolo(simbolo):
 # REPRODUCIR FRASE
 # =========================================================
 
-def reproducir_frase(frase, estado_switch):
-
+def reproducir_frase(frase, estado_switch, ronda_actual):
+    
     print("\n>>> REPRODUCIENDO:", frase)
 
     frase = frase.upper()
@@ -221,7 +221,7 @@ def reproducir_frase(frase, estado_switch):
             if estado_switch == 1:
 
                 buzzer.freq(600)
-                buzzer.duty_u16(32768)
+                buzzer.duty_u16(65536)
 
             # ===== MODO LUCES =====
             else:
@@ -230,23 +230,23 @@ def reproducir_frase(frase, estado_switch):
 
             # duración
             if simbolo == ".":
-                time.sleep_ms(UNIDAD)
+                time.sleep_ms(UNIDAD -(10 *ronda_actual))
 
             else:
-                time.sleep_ms(UNIDAD * 3)
+                time.sleep_ms(UNIDAD * 3 - (10*ronda_actual))
 
             # apagar
             buzzer.duty_u16(0)
             limpiar_leds()
 
             # espacio entre símbolos
-            time.sleep_ms(UNIDAD)
+            time.sleep_ms(UNIDAD -  (10* ronda_actual))
 
         # espacio entre letras
-        time.sleep_ms(UNIDAD * 3)
+        time.sleep_ms(UNIDAD * 3 - (10 *ronda_actual))
 
 # =========================================================
-# WIFI
+# WIFI 
 # =========================================================
 
 def connect_wifi():
@@ -338,7 +338,7 @@ while True:
         if estado_actual_switch == 1:
 
             buzzer.freq(600)
-            buzzer.duty_u16(32768)
+            buzzer.duty_u16(65536)
 
     # SOLTADO
     elif estado_boton == 0 and estado_boton_ant == 1:
@@ -425,10 +425,11 @@ while True:
                     if mensaje.startswith("FRASE:"):
 
                         frase_juego = mensaje.split(":")[1]
-
+                        ronda_actual = int(mensaje.split(":")[2])
                         reproducir_frase(
                             frase_juego,
-                            estado_actual_switch
+                            estado_actual_switch,
+                            ronda_actual
                         )
 
                     else:
@@ -446,4 +447,3 @@ while True:
                 print("PC Desconectada")
 
     time.sleep_ms(5)
-
